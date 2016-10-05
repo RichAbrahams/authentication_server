@@ -1,0 +1,21 @@
+{
+  "name": "auth2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.2",
+    "express": "*",
+    "jwt-simple": "^0.5.0",
+    "mongoose": "^4.6.2",
+    "morgan": "^1.7.0",
+    "passport-local": "^1.0.0"
+  }
+}
