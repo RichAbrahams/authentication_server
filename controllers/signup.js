@@ -1,19 +1,22 @@
 const User = require('../models/user');
 const tokenForUser = require('./generateToken');
+const validator = require('validator');
+
 
 function signup (req, res, next){
-  const username = req.body.username;
-  const email = req.body.email;
-  const password = req.body.password;
+  const username = validator.escape(req.body.username).toLowerCase();
+  const email = validator.escape(req.body.email).toLowerCase();
+  const password = validator.escape(req.body.password).toLowerCase();
 
-  if(!username){return res.status(422).json({success: false, error: 'username is required'});}
-  if(!email){return res.status(422).json({success: false, error: 'email is required'});}
-  if(!password){return res.status(422).json({success: false, error: 'password is required'});}
+  if(!username || validator.isEmpty(username)){return res.status(422).json({success: false, error: 'username is required', errorCode: 1});}
+  if(!email || validator.isEmpty(email)){return res.status(422).json({success: false, error: 'email is required', errorCode: 2});}
+  if(!password || validator.isEmpty(password)){return res.status(422).json({success: false, error: 'password is required', errorCode: 3});}
 
   const checkUsername = new Promise( (resolve, reject) => {
     User.findOne({ username: username }, (err, existingUser, next) => {
       if (err){ reject(err)};
       if (existingUser) {resolve(true);}
+
       resolve(false);
     });
   });
@@ -28,8 +31,8 @@ function signup (req, res, next){
 
   Promise.all([checkUsername, checkEmail])
   .then( (values) => {
-  if(values[0]){return res.status(422).json({success: false, error: 'username is already in use'});}
-  if(values[1]){return res.status(422).json({success: false, error: 'email is already in use'});}
+  if(values[0]){return res.status(422).json({success: false, error: 'username is already in use', errorCode: 1});}
+  if(values[1]){return res.status(422).json({success: false, error: 'email is already in use', errorCode: 2});}
   const user = new User({
     username,
     email,

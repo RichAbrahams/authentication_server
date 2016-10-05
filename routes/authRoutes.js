@@ -1,10 +1,10 @@
 const express = require('express');
+const router = express.Router();
 const signup = require('../controllers/signup');
 const signin = require('../controllers/signin');
-const router = express.Router();
+const passport = require('passport');
 const passportJwt = require('../services/passportJwt');
 const passportLocal = require('../services/passportLocal');
-const passport = require('passport');
 
 const requireAuth = passport.authenticate('jwt', {session: false});
 const requireSignin = passport.authenticate('local', {session: false});
